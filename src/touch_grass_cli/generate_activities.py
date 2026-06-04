@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate a synthetic dataset of activities for the Summer Quest recommendation engine.
+Generate a synthetic dataset of activities for the Touch Grass recommendation engine.
 """
 
 import json
