@@ -1,0 +1,5 @@
+outs:
+- md5: 2e0251ce4439964de8698bbac8529a13
+  size: 780072
+  hash: md5
+  path: activities.json
