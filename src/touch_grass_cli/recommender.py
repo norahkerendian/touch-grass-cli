@@ -167,10 +167,10 @@ ENERGY_EMOJI = {
 }
 
 WEATHER_EMOJI = {
-    "sunny": "☀️ sunny",
+    "sunny":  "☀️  sunny",
     "cloudy": "⛅ cloudy",
-    "rainy": "🌧️ rainy",
-    "any": "🌈 any",
+    "rainy":  "🌧️ rainy",
+    "any":    "🌈 any",
 }
 
 CITY_EMOJI = {
@@ -189,6 +189,26 @@ CITY_EMOJI = {
     "Laguna Beach": "🎨",
 }
 
+import textwrap
+from typing import Dict, Any
+from wcwidth import wcswidth  # pip install wcwidth
+
+import unicodedata
+
+def visible_len(s: str) -> int:
+    """Return visual terminal width, stripping variation selectors that confuse wcswidth."""
+    # Remove variation selectors (U+FE00–U+FE0F) which add 0 width but aren't counted right
+    cleaned = "".join(c for c in s if unicodedata.category(c) != "Mn" and c not in "\uFE0F\uFE0E")
+    w = wcswidth(cleaned)
+    return w if w >= 0 else len(cleaned)
+
+def pad_to(s: str, width: int) -> str:
+    """Pad string s with spaces so its visual width equals `width`."""
+    return s + " " * (width - visible_len(s))
+
+def row(content: str, box_width: int) -> str:
+    """Pad content to exactly box_width visual columns and wrap in │ borders."""
+    return f"│ {pad_to(content, box_width)} │"
 
 def format_activity(activity: Dict[str, Any]) -> str:
     activity_id = activity.get("id", "N/A")
@@ -203,43 +223,29 @@ def format_activity(activity: Dict[str, Any]) -> str:
     cat_icon = CATEGORY_EMOJI.get(category, "✨")
     energy_str = ENERGY_EMOJI.get(energy, f"⚡ {energy}")
     weather_str = "  ".join(WEATHER_EMOJI.get(w, w) for w in weather_list)
-    duration_str = f"{'⏱️'} {duration}h"
 
-    BOX_WIDTH = 60          # inner content width (between │ and │)
-    OUTER = BOX_WIDTH + 2   # including the two │ chars
+    BOX_WIDTH = 60
+    OUTER = BOX_WIDTH + 2
 
-    def row(content: str) -> str:
-        """Pad content to exactly BOX_WIDTH and wrap in │ borders."""
-        # Strip ANSI/emoji length issues by padding to visible width
-        return f"│ {content:<{BOX_WIDTH}} │"
+    title   = f"#{activity_id}  {city_icon} {city}"
+    tags    = f"{cat_icon} {category}   {energy_str}"
+    details = f"🕐 {duration}h   🌤️ {weather_str}"
 
-    # Title row: ID + city
-    title = f"#{activity_id}  {city_icon} {city}"
-    title_row = row(title)
-
-    # Tags row: category, energy
-    tags = f"{cat_icon} {category}   {energy_str}"
-    tags_row = row(tags)
-
-    # Details row: duration + weather
-    details = f"{duration_str}   🌤 {weather_str}"
-    details_row = row(details)
-
-    # Wrapped description rows
     wrapped = textwrap.wrap(description, width=BOX_WIDTH)
-    desc_rows = "\n".join(row(line) for line in wrapped)
 
-    divider  = f"├{'─' * (OUTER)}┤"
-    top      = f"╭{'─' * (OUTER)}╮"
-    bottom   = f"╰{'─' * (OUTER)}╯"
+    divider = f"├{'─' * OUTER}┤"
+    top     = f"╭{'─' * OUTER}╮"
+    bottom  = f"╰{'─' * OUTER}╯"
 
-    return (
-        f"\n{top}\n"
-        f"{title_row}\n"
-        f"{divider}\n"
-        f"{tags_row}\n"
-        f"{details_row}\n"
-        f"{divider}\n"
-        f"{desc_rows}\n"
-        f"{bottom}\n"
-    )
+    lines = [
+        f"\n{top}",
+        row(title, BOX_WIDTH),
+        divider,
+        row(tags, BOX_WIDTH),
+        row(details, BOX_WIDTH),
+        divider,
+        *[row(line, BOX_WIDTH) for line in wrapped],
+        bottom,
+        "",
+    ]
+    return "\n".join(lines)
