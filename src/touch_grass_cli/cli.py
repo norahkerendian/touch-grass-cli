@@ -8,9 +8,13 @@ def main():
     pass
 
 @app.command()
-def plan():
-    """Generate a summer activity plan."""
-    print("Summer Quest coming soon!")
+def plan(
+    budget: int = typer.Option(
+        20,
+        help="Maximum budget in dollars"
+    )
+):
+    print(f"Planning an adventure under ${budget}")
 
 if __name__ == "__main__":
     app()
