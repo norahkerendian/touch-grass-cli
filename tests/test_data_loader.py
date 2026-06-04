@@ -16,6 +16,7 @@ from touch_grass_cli.recommender import (
     filter_by_weather,
     filter_by_duration,
     filter_by_energy,
+    filter_by_category,
 )
 
 # Load activities
@@ -35,12 +36,16 @@ print(f"✓ filter_by_duration: Found {len(filtered)} activities <= 3 hours")
 filtered = filter_by_energy(activities, "low")
 print(f"✓ filter_by_energy: Found {len(filtered)} low energy activities")
 
+filtered = filter_by_category(activities, "outdoors")
+print(f"✓ filter_by_category: Found {len(filtered)} outdoors activities")
+
 # Test combined recommendations
 recs = get_recommendations(
     city="Santa Monica",
     weather="sunny",
     duration=5,
     energy="medium",
+    category="outdoors",
     limit=3,
 )
 print(f"✓ get_recommendations: Got {len(recs)} recommendations with combined filters")

@@ -78,11 +78,30 @@ def filter_by_energy(activities: List[Dict[str, Any]], energy_level: str) -> Lis
     return [a for a in activities if a.get("energy", "").lower() == energy_lower]
 
 
+def filter_by_category(activities: List[Dict[str, Any]], category: str) -> List[Dict[str, Any]]:
+    """
+    Filter activities by category.
+
+    Args:
+        activities: List of activity dictionaries
+        category: Category name (case-insensitive match)
+
+    Returns:
+        Filtered list of activities with matching category
+    """
+    if not category:
+        return activities
+
+    category_lower = category.lower()
+    return [a for a in activities if a.get("category", "").lower() == category_lower]
+
+
 def get_recommendations(
     city: Optional[str] = None,
     weather: Optional[str] = None,
     duration: Optional[int] = None,
     energy: Optional[str] = None,
+    category: Optional[str] = None,
     limit: int = 5,
 ) -> List[Dict[str, Any]]:
     """
@@ -93,6 +112,7 @@ def get_recommendations(
         weather: Filter by weather (optional)
         duration: Filter by max duration in hours (optional)
         energy: Filter by energy level (optional)
+        category: Filter by activity category (optional)
         limit: Maximum number of recommendations to return (default 5)
         
     Returns:
@@ -112,6 +132,9 @@ def get_recommendations(
     
     if energy:
         activities = filter_by_energy(activities, energy)
+
+    if category:
+        activities = filter_by_category(activities, category)
     
     # Randomly select up to 'limit' activities
     if len(activities) == 0:

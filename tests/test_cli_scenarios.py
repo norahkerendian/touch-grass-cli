@@ -24,12 +24,13 @@ recs = get_recommendations(city="Santa Monica", limit=5)
 print(f"   ✓ Got {len(recs)} recommendations for Santa Monica\n")
 
 # Test 3: Multiple filters
-print("3️⃣  Multiple Filters (city + weather + duration + energy):")
+print("3️⃣  Multiple Filters (city + weather + duration + energy + category):")
 recs = get_recommendations(
     city="San Diego",
     weather="sunny",
     duration=3,
     energy="low",
+    category="outdoors",
     limit=5
 )
 print(f"   ✓ Got {len(recs)} recommendations matching all filters\n")

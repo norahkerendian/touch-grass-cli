@@ -11,7 +11,7 @@ summer-quest plan
 ## Features
 
 - Get random activity recommendations from the full dataset.
-- Filter by city, weather, duration, and energy level.
+- Filter by city, weather, duration, energy level, and category.
 - Use surprise mode when you want the CLI to pick one unexpected activity.
 - See available filter options directly in the help output.
 - Regenerate the synthetic activity dataset from source templates.
@@ -51,6 +51,12 @@ Combine filters:
 uv run summer-quest plan --city "Los Angeles" --energy low --hours 3
 ```
 
+Filter by category:
+
+```bash
+uv run summer-quest plan --category outdoors
+```
+
 Filter by weather:
 
 ```bash
@@ -73,6 +79,7 @@ All filters are optional.
 | `--weather` | Matches activities that support a weather condition. |
 | `--hours` | Returns activities with `duration_hours` less than or equal to this value. |
 | `--energy` | Matches activities by energy level. |
+| `--category` | Matches activities in a specific category. |
 | `--surprise` | Ignores filters and returns one random activity. |
 
 The help output lists the current available values from `data/activities.json`, so users do not have to guess:
@@ -86,6 +93,7 @@ Current filter values include:
 - Cities: Carlsbad, Coronado, Del Mar, Encinitas, Irvine, La Jolla, Laguna Beach, Los Angeles, Newport Beach, Oceanside, Pasadena, San Diego, Santa Monica
 - Weather: any, cloudy, sunny
 - Energy: high, low, medium
+- Categories: adventure, creative, entertainment, exercise, food, learning, outdoor, outdoors, relaxing, shopping, sightseeing, social
 - Durations: 1, 2, 3, 4, 5, 6, 8 hours
 
 ## Dataset

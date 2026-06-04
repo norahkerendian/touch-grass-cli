@@ -65,6 +65,11 @@ def plan(
         "--energy",
         help=f"Filter by energy level. Options: {_get_filter_options('energy')}"
     ),
+    category: Optional[str] = typer.Option(
+        None,
+        "--category",
+        help=f"Filter by activity category. Options: {_get_filter_options('category')}"
+    ),
     surprise: bool = typer.Option(
         False,
         "--surprise",
@@ -85,6 +90,7 @@ def plan(
         summer-quest plan --city "San Diego"
         summer-quest plan --city "Los Angeles" --energy "low" --hours 3
         summer-quest plan --weather "sunny" --energy "high"
+        summer-quest plan --category "outdoors"
         summer-quest plan --surprise
     """
     try:
@@ -98,6 +104,7 @@ def plan(
                 weather=weather,
                 duration=hours,
                 energy=energy,
+                category=category,
                 limit=5
             )
         
@@ -122,6 +129,8 @@ def plan(
                 active_filters.append(f"⏱️  Max Duration: {hours} hours")
             if energy:
                 active_filters.append(f"💪 Energy Level: {energy}")
+            if category:
+                active_filters.append(f"🏷️  Category: {category}")
             
             if active_filters:
                 typer.echo("Active Filters:")
