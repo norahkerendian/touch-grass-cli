@@ -228,7 +228,8 @@ def format_activity(activity: Dict[str, Any]) -> str:
     OUTER = BOX_WIDTH + 2
 
     title   = f"#{activity_id}  {city_icon} {city}"
-    tags    = f"{cat_icon} {category}   {energy_str}"
+    energy_icon = energy_str.split()[0]  # grab just the emoji
+    tags = f"{cat_icon} category: {category}   {energy_icon} energy: {energy}"
     details = f"🕐 {duration}h   🌤️ {weather_str}"
 
     wrapped = textwrap.wrap(description, width=BOX_WIDTH)
