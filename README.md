@@ -1,11 +1,11 @@
-# Summer Quest CLI
+# Touch Grass CLI
 
-Summer Quest is a command-line activity recommender for finding something fun to do outside, around town, or nearby. It loads a local activity dataset, applies optional filters, and prints a small set of randomized recommendations.
+Touch Grass is a command-line activity recommender for finding something fun to do outside, around town, or nearby. It loads a local activity dataset, applies optional filters, and prints a small set of randomized recommendations.
 
 The CLI command is:
 
 ```bash
-summer-quest plan
+touch-grass plan
 ```
 
 ## Features
@@ -22,13 +22,13 @@ This project uses `uv` for running the package and managing dependencies.
 
 ```bash
 uv sync
-uv run summer-quest plan
+uv run touch-grass plan
 ```
 
 To see every available CLI option:
 
 ```bash
-uv run summer-quest plan --help
+uv run touch-grass plan --help
 ```
 
 ## Usage
@@ -36,37 +36,37 @@ uv run summer-quest plan --help
 Run the planner with no filters to get five random recommendations:
 
 ```bash
-uv run summer-quest plan
+uv run touch-grass plan
 ```
 
 Filter by city:
 
 ```bash
-uv run summer-quest plan --city "San Diego"
+uv run touch-grass plan --city "San Diego"
 ```
 
 Combine filters:
 
 ```bash
-uv run summer-quest plan --city "Los Angeles" --energy low --hours 3
+uv run touch-grass plan --city "Los Angeles" --energy low --hours 3
 ```
 
 Filter by category:
 
 ```bash
-uv run summer-quest plan --category outdoors
+uv run touch-grass plan --category outdoors
 ```
 
 Filter by weather:
 
 ```bash
-uv run summer-quest plan --weather sunny --energy high
+uv run touch-grass plan --weather sunny --energy high
 ```
 
 Use surprise mode to ignore all filters and return one random activity:
 
 ```bash
-uv run summer-quest plan --surprise
+uv run touch-grass plan --surprise
 ```
 
 ## Filters
@@ -85,7 +85,7 @@ All filters are optional.
 The help output lists the current available values from `data/activities.json`, so users do not have to guess:
 
 ```bash
-uv run summer-quest plan --help
+uv run touch-grass plan --help
 ```
 
 Current filter values include:
@@ -164,7 +164,7 @@ uv run python tests/test_cli_scenarios.py
 
 ## Development Notes
 
-- The package entry point is configured in `pyproject.toml` as `summer-quest`.
+- The package entry point is configured in `pyproject.toml` as `touch-grass`.
 - Recommendation logic lives in `src/touch_grass_cli/recommender.py`.
 - CLI option help is generated from the current dataset, so updating `activities.json` updates the help text automatically.
 - Invalid filter values are not rejected before running the search; they return no matching activities.

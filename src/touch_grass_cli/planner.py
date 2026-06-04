@@ -9,7 +9,7 @@ def build_context(budget: int) -> dict[str, object]:
 
 def build_prompt(context: dict[str, object]) -> str:
     return (
-        "Plan a Summer Quest adventure with these details:\n"
+        "Plan a Touch Grass adventure with these details:\n"
         f"- Location: {context['location']}\n"
         f"- Weather: {context['weather']}\n"
         f"- Free time: {context['free_time']}\n"

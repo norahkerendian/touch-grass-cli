@@ -1,6 +1,6 @@
 # Testing Guide
 
-This directory contains test files for the Summer Quest CLI project.
+This directory contains test files for the Touch Grass CLI project.
 
 ## Test Files
 

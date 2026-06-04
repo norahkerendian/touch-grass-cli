@@ -1,9 +1,9 @@
 def generate_plan(prompt: str) -> str:
-    """Generate a Summer Quest plan using the default mock AI provider."""
+    """Generate a Touch Grass plan using the default mock AI provider."""
     if not prompt.strip():
         raise ValueError("Prompt cannot be empty.")
 
-    return """Summer Quest Plan
+    return """Touch Grass Plan
 
 1. Balboa Park Garden Walk
    Duration: 45 minutes

@@ -39,7 +39,7 @@ def _get_filter_options(field: str) -> str:
 
 @app.callback()
 def main():
-    """Summer Quest CLI."""
+    """Touch Grass CLI."""
     pass
 
 
@@ -86,12 +86,12 @@ def plan(
     
     Examples:
     
-        summer-quest plan
-        summer-quest plan --city "San Diego"
-        summer-quest plan --city "Los Angeles" --energy "low" --hours 3
-        summer-quest plan --weather "sunny" --energy "high"
-        summer-quest plan --category "outdoors"
-        summer-quest plan --surprise
+        touch-grass plan
+        touch-grass plan --city "San Diego"
+        touch-grass plan --city "Los Angeles" --energy "low" --hours 3
+        touch-grass plan --weather "sunny" --energy "high"
+        touch-grass plan --category "outdoors"
+        touch-grass plan --surprise
     """
     try:
         # Surprise mode overrides all filters
@@ -114,10 +114,10 @@ def plan(
         
         # Display recommendations header
         if surprise:
-            typer.echo("\n🎉 Summer Quest - Surprise Activity! 🎉\n")
+            typer.echo("\n🎉 Touch Grass - Surprise Activity! 🎉\n")
             typer.echo("Get out there and try something unexpected today!\n")
         else:
-            typer.echo("\n🌿 Summer Quest - Activity Recommendations 🌿\n")
+            typer.echo("\n🌿 Touch Grass - Activity Recommendations 🌿\n")
             
             # Show active filters
             active_filters = []
