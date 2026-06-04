@@ -1,11 +1,40 @@
 import typer
-from typing import Optional
+from typing import Any, Iterable, Optional
 
 from touch_grass_cli.ai import generate_plan
+from touch_grass_cli.data_loader import load_activities
 from touch_grass_cli.planner import build_context, build_prompt
 from touch_grass_cli.recommender import get_recommendations, format_activity
 
 app = typer.Typer()
+
+
+def _format_options(values: Iterable[Any]) -> str:
+    """Format filter values for compact CLI help."""
+    return ", ".join(str(value) for value in sorted(values))
+
+
+def _get_filter_options(field: str) -> str:
+    try:
+        activities = load_activities()
+    except (FileNotFoundError, RuntimeError, ValueError):
+        return "options unavailable"
+
+    if field == "weather":
+        values = {
+            weather
+            for activity in activities
+            for weather in activity.get("weather", [])
+            if weather
+        }
+    else:
+        values = {
+            activity.get(field)
+            for activity in activities
+            if activity.get(field) is not None
+        }
+
+    return _format_options(values)
 
 
 @app.callback()
@@ -19,22 +48,22 @@ def plan(
     city: Optional[str] = typer.Option(
         None,
         "--city",
-        help="Filter by city (e.g., San Diego, Los Angeles)"
+        help=f"Filter by city. Options: {_get_filter_options('city')}"
     ),
     weather: Optional[str] = typer.Option(
         None,
         "--weather",
-        help="Filter by weather (sunny, cloudy, rainy, any)"
+        help=f"Filter by weather. Options: {_get_filter_options('weather')}"
     ),
     hours: Optional[int] = typer.Option(
         None,
         "--hours",
-        help="Filter by maximum duration in hours"
+        help=f"Filter by maximum duration in hours. Available activity durations: {_get_filter_options('duration_hours')}"
     ),
     energy: Optional[str] = typer.Option(
         None,
         "--energy",
-        help="Filter by energy level (low, medium, high)"
+        help=f"Filter by energy level. Options: {_get_filter_options('energy')}"
     ),
     surprise: bool = typer.Option(
         False,
