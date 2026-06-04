@@ -119,16 +119,36 @@ def get_recommendations(
     return random.sample(activities, min(limit, len(activities)))
 
 
-def format_activity(activity: Dict[str, Any]) -> str:
-    """
-    Format an activity for display in the terminal.
+# def format_activity(activity: Dict[str, Any]) -> str:
+#     """
+#     Format an activity for display in the terminal.
     
-    Args:
-        activity: Activity dictionary
+#     Args:
+#         activity: Activity dictionary
         
-    Returns:
-        Formatted string for display
-    """
+#     Returns:
+#         Formatted string for display
+#     """
+#     activity_id = activity.get("id", "N/A")
+#     city = activity.get("city", "Unknown")
+#     category = activity.get("category", "Unknown")
+#     duration = activity.get("duration_hours", "N/A")
+#     energy = activity.get("energy", "Unknown")
+#     weather = ", ".join(activity.get("weather", ["any"]))
+#     description = activity.get("description", "No description")
+    
+#     return f"""
+# ┌─────────────────────────────────────────────────────────────────────────────┐
+# │ ID: {activity_id:<6} | {city:<20} | {category:<15} | {energy:<8} │
+# ├─────────────────────────────────────────────────────────────────────────────┤
+# │ Duration: {duration}h | Weather: {weather:<30} │
+# ├─────────────────────────────────────────────────────────────────────────────┤
+# │ {description}
+# └─────────────────────────────────────────────────────────────────────────────┘
+# """
+import textwrap
+
+def format_activity(activity: Dict[str, Any]) -> str:
     activity_id = activity.get("id", "N/A")
     city = activity.get("city", "Unknown")
     category = activity.get("category", "Unknown")
@@ -136,13 +156,17 @@ def format_activity(activity: Dict[str, Any]) -> str:
     energy = activity.get("energy", "Unknown")
     weather = ", ".join(activity.get("weather", ["any"]))
     description = activity.get("description", "No description")
-    
+
+    box_width = 77  # inner width between │ and │
+    wrapped = textwrap.wrap(description, width=box_width - 2)  # -2 for "│ " and " │"
+    desc_lines = "\n".join(f"│ {line:<{box_width - 2}} │" for line in wrapped)
+
     return f"""
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ ID: {activity_id:<6} | {city:<20} | {category:<15} | {energy:<8} │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Duration: {duration}h | Weather: {weather:<30} │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ {description}
+{desc_lines}
 └─────────────────────────────────────────────────────────────────────────────┘
 """
