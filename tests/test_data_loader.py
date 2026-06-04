@@ -44,6 +44,9 @@ recs = get_recommendations(
     limit=3,
 )
 print(f"✓ get_recommendations: Got {len(recs)} recommendations with combined filters")
-print(f'3 recommendations: {recs}')
+
+# Test recommendations with no filters
+recs_no_filters = get_recommendations(limit=5)
+print(f"✓ get_recommendations (no filters): Got {len(recs_no_filters)} random recommendations")
 
 print("\n✅ All modules working correctly!")

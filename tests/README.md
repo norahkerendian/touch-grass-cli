@@ -26,12 +26,47 @@ Displays a sample of activities from the dataset to verify data quality and stru
 python tests/test_activities_sample.py
 ```
 
+### `test_cli_scenarios.py`
+Tests all CLI usage scenarios:
+- No filters (random recommendations)
+- Single filter
+- Multiple filters
+- Surprise mode (random activity ignoring filters)
+
+**Run:**
+```bash
+python tests/test_cli_scenarios.py
+```
+
+## CLI Usage Modes
+
+### 1. Random Recommendations (No Filters)
+```bash
+python -m touch_grass_cli.cli plan
+```
+Returns 5 random activities from all 1,909 available.
+
+### 2. Filtered Recommendations
+```bash
+python -m touch_grass_cli.cli plan --city "San Diego"
+python -m touch_grass_cli.cli plan --city "Los Angeles" --energy "low" --hours 3
+python -m touch_grass_cli.cli plan --weather "sunny" --energy "high"
+```
+Returns up to 5 activities matching the specified filters.
+
+### 3. Surprise Mode (NEW!)
+```bash
+python -m touch_grass_cli.cli plan --surprise
+```
+Ignores all filters and returns 1 random activity with a celebratory message!
+
 ## Running All Tests
 
 ```bash
 # Run individual test files from project root
 python tests/test_data_loader.py
 python tests/test_activities_sample.py
+python tests/test_cli_scenarios.py
 ```
 
 ## Notes
@@ -39,3 +74,4 @@ python tests/test_activities_sample.py
 - All tests add the `src/` directory to `sys.path` automatically
 - Tests should be run from the project root directory
 - No external dependencies required - uses only Python standard library
+- Surprise mode is perfect for when you can't decide - it picks something unexpected for you!

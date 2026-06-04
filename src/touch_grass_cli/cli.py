@@ -16,11 +16,6 @@ def main():
 
 @app.command()
 def plan(
-    budget: int = typer.Option(
-        20,
-        "--budget",
-        help="Maximum budget in dollars"
-    ),
     city: Optional[str] = typer.Option(
         None,
         "--city",
@@ -41,43 +36,73 @@ def plan(
         "--energy",
         help="Filter by energy level (low, medium, high)"
     ),
+    surprise: bool = typer.Option(
+        False,
+        "--surprise",
+        help="Ignore all filters and get a random surprise activity!"
+    ),
 ):
     """
     Get personalized activity recommendations.
     
-    Use filters to narrow down suggestions:
-    - --city: Filter by location
-    - --weather: Filter by weather conditions
-    - --hours: Filter by activity duration
-    - --energy: Filter by energy level required
+    All filters are optional. If no filters are provided, you'll get
+    random recommendations from all available activities.
+    
+    Use --surprise to ignore all filters and get a random activity!
+    
+    Examples:
+    
+        summer-quest plan
+        summer-quest plan --city "San Diego"
+        summer-quest plan --city "Los Angeles" --energy "low" --hours 3
+        summer-quest plan --weather "sunny" --energy "high"
+        summer-quest plan --surprise
     """
     try:
-        # Get recommendations based on filters
-        recommendations = get_recommendations(
-            city=city,
-            weather=weather,
-            duration=hours,
-            energy=energy,
-            limit=5
-        )
+        # Surprise mode overrides all filters
+        if surprise:
+            recommendations = get_recommendations(limit=1)
+        else:
+            # Get recommendations based on filters
+            recommendations = get_recommendations(
+                city=city,
+                weather=weather,
+                duration=hours,
+                energy=energy,
+                limit=5
+            )
         
         if not recommendations:
             typer.echo("No activities found matching your filters.", err=True)
             raise typer.Exit(code=1)
         
-        # Display recommendations
-        typer.echo("\n🌿 Summer Quest - Activity Recommendations 🌿\n")
-        
-        if city:
-            typer.echo(f"📍 City: {city}")
-        if weather:
-            typer.echo(f"☀️  Weather: {weather}")
-        if hours:
-            typer.echo(f"⏱️  Max Duration: {hours} hours")
-        if energy:
-            typer.echo(f"💪 Energy Level: {energy}")
-        
-        typer.echo(f"\n Found {len(recommendations)} activity recommendations:\n")
+        # Display recommendations header
+        if surprise:
+            typer.echo("\n🎉 Summer Quest - Surprise Activity! 🎉\n")
+            typer.echo("Get out there and try something unexpected today!\n")
+        else:
+            typer.echo("\n🌿 Summer Quest - Activity Recommendations 🌿\n")
+            
+            # Show active filters
+            active_filters = []
+            if city:
+                active_filters.append(f"📍 City: {city}")
+            if weather:
+                active_filters.append(f"☀️  Weather: {weather}")
+            if hours:
+                active_filters.append(f"⏱️  Max Duration: {hours} hours")
+            if energy:
+                active_filters.append(f"💪 Energy Level: {energy}")
+            
+            if active_filters:
+                typer.echo("Active Filters:")
+                for filter_str in active_filters:
+                    typer.echo(f"  {filter_str}")
+                typer.echo()
+            else:
+                typer.echo("✨ Showing random activities from all available options\n")
+            
+            typer.echo(f"Found {len(recommendations)} activity recommendation{'s' if len(recommendations) != 1 else ''}:\n")
         
         for i, activity in enumerate(recommendations, 1):
             typer.echo(format_activity(activity))
