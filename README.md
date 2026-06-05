@@ -14,7 +14,7 @@ touch-grass plan
 - Filter by city, weather, duration, energy level, and category.
 - Use surprise mode when you want the CLI to pick one unexpected activity.
 - See available filter options directly in the help output.
-- Regenerate the synthetic activity dataset from source templates.
+- Regenerate the packaged synthetic activity dataset from source templates.
 
 ## Quick Start
 
@@ -82,7 +82,7 @@ All filters are optional.
 | `--category` | Matches activities in a specific category. |
 | `--surprise` | Ignores filters and returns one random activity. |
 
-The help output lists the current available values from `data/activities.json`, so users do not have to guess:
+The help output lists the current available values from the packaged dataset, so users do not have to guess:
 
 ```bash
 uv run touch-grass plan --help
@@ -98,11 +98,13 @@ Current filter values include:
 
 ## Dataset
 
-The activity data lives in:
+The activity data is packaged with the Python module at:
 
 ```text
-data/activities.json
+src/touch_grass_cli/data/activities.json
 ```
+
+`touch_grass_cli.data_loader` reads this file with `importlib.resources`, so the installed CLI can find the dataset after installing from GitHub or from a built wheel.
 
 Each activity contains:
 
@@ -126,11 +128,11 @@ The generator creates a synthetic dataset from activity templates in `src/touch_
 
 ```text
 .
-|-- data/
-|   `-- activities.json
 |-- src/
 |   `-- touch_grass_cli/
 |       |-- cli.py
+|       |-- data/
+|       |   `-- activities.json
 |       |-- data_loader.py
 |       |-- generate_activities.py
 |       `-- recommender.py
@@ -166,5 +168,5 @@ uv run python tests/test_cli_scenarios.py
 
 - The package entry point is configured in `pyproject.toml` as `touch-grass`.
 - Recommendation logic lives in `src/touch_grass_cli/recommender.py`.
-- CLI option help is generated from the current dataset, so updating `activities.json` updates the help text automatically.
+- CLI option help is generated from the packaged dataset, so updating `src/touch_grass_cli/data/activities.json` updates the help text automatically.
 - Invalid filter values are not rejected before running the search; they return no matching activities.

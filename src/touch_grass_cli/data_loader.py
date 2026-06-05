@@ -1,33 +1,28 @@
 """Load and manage activity data from JSON."""
 
 import json
-from pathlib import Path
-from typing import List, Dict, Any
+from importlib import resources
+from typing import Any, Dict, List
 
 
-def get_activities_path() -> Path:
-    """Get the path to the activities.json file."""
-    return Path(__file__).parent.parent.parent / "data" / "activities.json"
-# change this to include importlib.resources to load your data 
+ACTIVITIES_RESOURCE = resources.files("touch_grass_cli").joinpath("data").joinpath("activities.json")
 
 
 def load_activities() -> List[Dict[str, Any]]:
     """
-    Load activities from data/activities.json.
+    Load activities from the packaged activities.json resource.
     
     Returns:
         List of activity dictionaries
         
     Raises:
-        FileNotFoundError: If activities.json does not exist
+        FileNotFoundError: If the packaged activities.json resource does not exist
         json.JSONDecodeError: If JSON is invalid
     """
-    activities_path = get_activities_path()
-    
-    if not activities_path.exists():
-        raise FileNotFoundError(f"Activities file not found at {activities_path}")
-    
-    with open(activities_path, "r") as f:
-        data = json.load(f)
-    
-    return data
+    try:
+        with ACTIVITIES_RESOURCE.open("r", encoding="utf-8") as file:
+            return json.load(file)
+    except FileNotFoundError as error:
+        raise FileNotFoundError(
+            "Packaged activities file not found: touch_grass_cli/data/activities.json"
+        ) from error
