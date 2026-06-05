@@ -8,6 +8,7 @@ from typing import List, Dict, Any
 def get_activities_path() -> Path:
     """Get the path to the activities.json file."""
     return Path(__file__).parent.parent.parent / "data" / "activities.json"
+# change this to include importlib.resources to load your data 
 
 
 def load_activities() -> List[Dict[str, Any]]:
