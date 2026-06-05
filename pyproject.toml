@@ -8,7 +8,6 @@ authors = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "dvc>=3.67.1",
     "typer>=0.23.2",
 ]
 

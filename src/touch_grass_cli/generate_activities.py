@@ -362,7 +362,7 @@ def save_dataset(activities: List[Dict[str, Any]], filepath: Path) -> None:
 
 def main():
     """Generate and save the activity dataset."""
-    output_path = Path(__file__).parent.parent.parent / "data" / "activities.json"
+    output_path = Path(__file__).parent / "data" / "activities.json"
     
     print("Generating activity dataset...")
     activities = generate_dataset()
