@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.9"
 dependencies = [
     "typer>=0.23.2",
+    "wcwidth>=0.2.0",
 ]
 
 [project.scripts]
